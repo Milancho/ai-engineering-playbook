@@ -1,7 +1,7 @@
 # AI Intelligence Platform — What We Are Building
 
 **START HERE**  
-**Purpose:** Give management, product, architecture, and development one simple picture of what we are building, what the client will experience, what we build first, and how detailed documentation follows from this north-star document.
+**Purpose:** Give management, product, architecture, and development one simple picture of what we are building, what the client will experience, what we build first, which technology we intend to use, and how detailed documentation follows from this north-star document.
 
 ## 1. Vision
 
@@ -104,7 +104,77 @@ flowchart TB
 
 AI may select permitted tools, but prompts are not a security boundary. Authorization, policy, approval, validation and audit are enforced by the platform and deterministic systems.
 
-## 5. Deployment and Model Independence
+## 5. Architecture Baseline — Clean Architecture + Modular Monolith
+
+The platform starts as an **ASP.NET Core Modular Monolith** with **Clean Architecture principles per module**. We deliberately avoid premature microservice decomposition while preserving module and provider boundaries that can evolve later.
+
+```mermaid
+flowchart TB
+    UI[Angular UI<br/>DevExtreme + selected Syncfusion components] --> API[ASP.NET Core API]
+    API --> MM[Modular Monolith]
+    MM --> AG[AI / Agents]
+    MM --> DOC[Documents]
+    MM --> FIN[Financial Intelligence]
+    MM --> GOV[Governance]
+    MM --> INT[Core Integration]
+
+    AG --> MAF[Microsoft Agent Framework Adapter]
+    DOC --> SF[Syncfusion Adapter]
+    FIN --> DET[Deterministic .NET Validation / Calculations]
+    GOV --> HITL[Human Review / Audit / Trace]
+    INT --> CORE[APS / Core / DDC / BPMN]
+```
+
+### Architecture principles
+
+- Modular Monolith first; extract services only when operational evidence justifies it.
+- Clean Architecture principles inside module boundaries.
+- Frameworks/vendors remain behind application-owned contracts/adapters.
+- Deterministic Core remains authoritative for calculations, validation, rules, permissions, workflow authority and system-of-record writes.
+- Human-in-the-loop for consequential outcomes.
+- On-premises, hybrid and approved cloud deployment are first-class requirements.
+- Structured outputs/contracts are preferred when AI results are consumed by business systems.
+
+Detailed decision: `docs/architecture/ADR-002-Clean-Architecture-Modular-Monolith.md`.
+
+## 6. Technology Direction
+
+| Layer | Initial technology / approach |
+|---|---|
+| Existing APS frontend | Angular + DevExtreme |
+| New document-heavy AI UI | Angular + selected Syncfusion runtime components where valuable |
+| Backend / API | .NET / ASP.NET Core |
+| Application architecture | Clean Architecture + Modular Monolith |
+| Agent/orchestration candidate | Microsoft Agent Framework behind platform abstraction |
+| Document intelligence / processing | Syncfusion Document SDK / Document Processing capabilities as first provider candidate |
+| Document AI tools | Syncfusion AI Agent Tools where validated for the use case |
+| Financial calculations / validation | Deterministic .NET services/tools |
+| Existing enterprise capability | APS/Core, DDC, BPMN through governed APIs/adapters/tools |
+| AI provider access | Platform-owned AI Provider Gateway |
+| Cloud LLM options | Claude, OpenAI, Azure OpenAI and future approved providers |
+| On-prem AI | Approved local/open LLM through the same provider boundary |
+| RAG | Later capability; provider-independent ingestion/embedding/retrieval boundaries |
+| Governance | Platform-owned HITL, audit, traces, policy and evidence |
+
+### Syncfusion position
+
+We already have a Syncfusion license, so Syncfusion is a strong first implementation candidate for document-heavy capabilities. It remains a **provider/enabler**, not the AI Platform.
+
+```mermaid
+flowchart TD
+    SF[Syncfusion] --> R[Runtime Product Capabilities]
+    SF --> E[Development-Time AI Engineering]
+    R --> R1[Document SDK / Processing]
+    R --> R2[AI Agent Tools]
+    R --> R3[PDF / DOCX / Spreadsheet UI]
+    E --> E1[Agent Skills]
+    E --> E2[Agentic UI Builder]
+    E --> E3[AI Development Assistance]
+```
+
+Existing APS screens remain DevExtreme-based. We evaluate selected Syncfusion UI components for new document-centric/evidence-heavy AI screens rather than replacing the existing frontend stack.
+
+## 7. Deployment and Model Independence
 
 The same platform must support client security and residency requirements.
 
@@ -121,7 +191,7 @@ flowchart TD
 
 Agents and business services depend on platform-owned contracts, not model brands. Claude, OpenAI/Azure OpenAI, local/open models, embedding providers, retrieval stores, and document providers remain replaceable behind governed boundaries.
 
-## 6. What We Build First — MVP v0.1
+## 8. What We Build First — MVP v0.1
 
 The first management-presentable vertical slice is deliberately small.
 
@@ -153,7 +223,9 @@ flowchart TD
 
 Multi-agent collaboration, full enterprise RAG, BPMN/DDC integration, production Core write-back, predictive ML, a complete model-routing engine, a general enterprise chatbot, and broad autonomous workflows are future phases unless discovery proves one is essential to validate the MVP.
 
-## 7. Product Roadmap
+## 9. BKT Reference -> Delivery Phases
+
+The BKT AI 1/2/3 demonstrations are used as a reference for the **type of credit-workflow experience** we want to reach, not as a product to clone.
 
 ```mermaid
 flowchart LR
@@ -164,21 +236,21 @@ flowchart LR
 
 ### Phase 1 — Document & Financial Intelligence
 
-Prove extraction, structured data, deterministic validation/calculation, AI analysis, evidence and human review.
+Build the engine behind BKT-like document/financial capabilities: extraction, structured financial data, deterministic ratios/validation, AI findings, explanation, evidence and human review.
 
 ### Phase 2 — Loan Application Copilot
 
-Embed intelligence into the real loan/application workspace and introduce governed domain skills such as Analyze Financials, Check Missing Documents, Explain Warnings, Summarize Application and Draft Conclusion.
+Make the client experience visibly BKT-like by embedding intelligence in the real loan/application workspace. Candidate governed commands include **Analyze Financials**, **Check Missing Documents**, **Explain Warnings**, **Summarize Application**, **Draft Credit Conclusion**, and **Suggest Next Action**.
 
 ### Phase 3 — Core / DDC / BPMN Intelligence
 
-Expose approved existing enterprise capabilities as governed tools and add workflow/context intelligence without replacing deterministic authority.
+Expose approved Core, DDC and BPMN capabilities as governed tools. Add workflow/context intelligence, missing-information detection, blocker explanation and next-step recommendations while keeping deterministic systems authoritative.
 
 ### Phase 4 — Agentic Connected Intelligence
 
 Introduce broader agentic workflows and multi-agent collaboration only where clear specialist boundaries and measurable value justify the complexity.
 
-## 8. Documentation Hierarchy
+## 10. Documentation Hierarchy
 
 This document sits above implementation decomposition. It is not an EPIC document.
 
@@ -196,7 +268,7 @@ flowchart TD
 
 Every future EPIC should be traceable to an approved product/MVP capability. This prevents interesting AI experiments from expanding scope without contributing to the management-visible vertical slice.
 
-## 9. Repository Map
+## 11. Repository Map
 
 Use this file as the entry point. Detailed documentation provides drill-down, not a competing product definition.
 
@@ -216,16 +288,18 @@ flowchart TD
 
     C --> C1[Document + Financial Architecture]
     C --> C2[Hybrid AI / Model Routing]
+    C --> C3[ADR-001 Microsoft Agent Framework]
+    C --> C4[ADR-002 Clean Architecture + Modular Monolith]
 
     D --> D1[MVP v0.1 Management Demo]
     D --> D2[Agentic AI Architect Learning Path]
 ```
 
-## 10. One-Sentence Management Explanation
+## 12. One-Sentence Management Explanation
 
 > We are building an Enterprise AI Intelligence Platform on top of our existing Core systems; the first MVP reads financial documents, converts them into structured data, uses deterministic validation and calculations, provides evidence-backed AI analysis and recommendations, and keeps the human in control, with an architecture that can later support Loan, DDC, BPMN, on-premises models and approved cloud LLMs.
 
-## 11. The Picture to Remember
+## 13. The Picture to Remember
 
 ```mermaid
 flowchart TD
