@@ -2,59 +2,122 @@
 
 **Status:** Architecture hypothesis for MVP validation  
 **Strategic source:** Vision 2030  
-**Research input:** Syncfusion Document Solutions 2026 Volume 1 and Volume 2
+**Research input:** Syncfusion Document Solutions 2026 Volume 1/2 plus Document Processing, Agent Workflow, and Embedded AI webinars
 
 ## 1. Purpose
 
-Define the first reusable architecture slice of the Enterprise AI Intelligence Platform around document understanding, structured financial data, deterministic validation/calculation, AI analysis, evidence, and human review.
+Define the first reusable architecture slice of the Enterprise AI Intelligence Platform around document understanding, structured financial data, deterministic validation/calculation, AI analysis, evidence, human review, and governed tool execution.
 
 This is not a Syncfusion architecture. Syncfusion is one candidate implementation behind platform-owned document contracts.
 
-## 2. Core Architecture Rule
+## 2. Core Architecture Rules
 
-**AI understands, analyzes, explains, recommends, and selects governed tools. Deterministic services remain authoritative for validation, calculations, workflow state, permissions, document mutations, and system-of-record writes.**
+1. **AI understands, analyzes, explains, recommends, and selects governed tools.**
+2. **Deterministic services remain authoritative** for validation, calculations, permissions, document mutations, workflow state, and system-of-record writes.
+3. **System prompts guide behavior; platform policy enforces behavior.** Authorization and consequential-action approval cannot rely on prompts alone.
+4. **Enterprise UIs call the AI Platform, not arbitrary model providers directly.**
+5. **Provider-specific document models do not become domain models.** Structured business schemas are platform-owned.
+
+## 3. Target Component Model
 
 ```mermaid
-flowchart TD
-    U[User / Business Workflow] --> O[AI Platform Orchestrator]
-    O --> DT[Document Tool Contracts]
-    DT --> SP[Syncfusion Provider Adapter]
-    SP --> DOC[Document SDK / Agent Tools]
-    DOC --> SR[Structured Result / Document Action Result]
-    SR --> V[Schema Validation]
-    V --> R[Deterministic Rules / Financial Calculations]
-    R --> AI[AI Analysis / Explanation]
-    AI --> HR[Human Review]
-    HR -->|Approved| HA[Host Adapter / Enterprise API]
-    HR -->|Rejected / Corrected| FB[Feedback / Audit]
-    HA --> SYS[Core / BPMN / DDC / Other System of Record]
-    HR --> FB
+flowchart TB
+    UI[Enterprise UI / MVP UI] --> API[AI Platform API]
+    API --> ORCH[AI Orchestrator]
+    ORCH --> REG[Tool Registry / Catalog]
+
+    REG --> DINT[Document Intelligence Tools]
+    REG --> DPROC[Document Processing Tools]
+    REG --> FIN[Financial Tools]
+    REG --> VAL[Validation Tools]
+
+    DINT --> SF[Syncfusion Provider Adapter]
+    DPROC --> SF
+    SF --> SDK[Syncfusion Document SDK / AI Agent Tools]
+
+    FIN --> DET[Deterministic .NET Financial Engine]
+    VAL --> DET
+
+    ORCH --> CTX[Context / Privacy Policy]
+    CTX --> AIGW[AI Provider Gateway]
+    AIGW --> MODEL[Approved AI Provider / Model]
+
+    ORCH --> GOV[Audit / Governance / Feedback]
+    ORCH --> STORE[Document Storage Abstraction]
+
+    GOV --> REVIEW[Human Review]
+    REVIEW -->|Approved future action| HOST[Host Adapter / Enterprise API]
+    HOST --> SYS[Core / BPMN / DDC / Other System of Record]
 ```
 
-## 3. Logical Components
+## 4. Logical Components
 
-### 3.1 Document Ingestion
+### 4.1 Document Ingestion
 
 Receives an uploaded or referenced business document and records metadata, source, type, security context, and processing status.
 
-### 3.2 Document Capability Abstraction
+### 4.2 Document Intelligence Capability
 
-Platform-owned contracts isolate business/orchestration code from a document vendor.
+Understands and structures documents. Candidate responsibilities include:
 
-Candidate responsibilities:
+- table/data extraction;
+- form recognition;
+- classification/understanding where needed;
+- source evidence capture;
+- mapping provider output into platform-owned schemas.
 
-- extract structured data/tables;
-- recognize forms;
-- convert supported document formats;
-- redact sensitive content;
-- process spreadsheets;
-- generate/modify documents when explicitly governed.
+### 4.3 Document Processing Capability
 
-### 3.3 Syncfusion Provider Adapter
+Executes deterministic document operations. Candidate responsibilities include:
 
-Candidate implementation of document contracts using evaluated Syncfusion Document SDK / AI Agent Tools capabilities. The adapter translates provider-specific responses into platform-owned schemas and evidence models.
+- create/generate;
+- modify;
+- convert;
+- redact;
+- sign;
+- annotate.
 
-### 3.4 Structured Schema Layer
+```mermaid
+flowchart LR
+    A[Document Capability Layer] --> B[Document Intelligence]
+    A --> C[Document Processing]
+    B --> D[Extract / Recognize / Understand]
+    C --> E[Create / Modify / Convert / Redact / Sign]
+```
+
+### 4.4 Syncfusion Provider Adapter
+
+Candidate implementation of Document Intelligence/Processing contracts using evaluated Syncfusion capabilities. Business/orchestration code must not depend directly on Syncfusion-specific APIs or response models.
+
+### 4.5 Tool Registry / Catalog
+
+Provides the orchestrator with an explicit catalog of available governed tools. Tool metadata should ultimately include contract/schema, permissions, risk/approval policy, provider/implementation, and audit behavior.
+
+Future tool families can include Document, Financial, Validation, BPMN, DDC and Core/API tools without changing the orchestration model.
+
+### 4.6 Tool Authorization and Policy
+
+Before a tool executes, the platform must verify availability, user/role authorization, policy, and whether human approval is required.
+
+```mermaid
+flowchart TD
+    A[Agent Selects Tool] --> B{Registered?}
+    B -->|No| X[Reject]
+    B -->|Yes| C{Authorized?}
+    C -->|No| X
+    C -->|Yes| D{Approval Required?}
+    D -->|Yes| E[Human Approval]
+    D -->|No| F[Execute]
+    E -->|Approved| F
+    E -->|Rejected| X
+    F --> G[Audit Result]
+```
+
+### 4.7 Document Storage Abstraction
+
+Input and generated documents should use a storage abstraction. MVP may use controlled local storage; production may use approved blob/object/client-specific storage without changing business orchestration.
+
+### 4.8 Structured Schema Layer
 
 Extraction output used by business systems must conform to a platform/domain schema rather than free-form prose.
 
@@ -67,96 +130,75 @@ flowchart LR
     S --> V[Validation]
 ```
 
-### 3.5 Validation and Deterministic Financial Engine
+### 4.9 Validation and Deterministic Financial Engine
 
-Validates required fields, data types, periods, currencies, totals, cross-field consistency, and configured business rules. Financial ratios and calculations are executed deterministically outside the LLM.
+Validates required fields, data types, periods, currencies, totals, cross-field consistency, and configured rules. Financial ratios/calculations execute deterministically outside the LLM.
 
-### 3.6 AI Analysis Layer
+### 4.10 AI Provider Gateway
 
-Consumes validated structured data, deterministic results, authorized context, and evidence to produce findings such as:
+Centralizes approved model/provider access. Enterprise UI components must not independently decide what sensitive document/business context is sent to an external provider. The gateway boundary supports provider replacement, data/privacy policy, configuration and audit.
 
-- explanations;
-- anomalies;
-- trends;
-- risk indicators;
-- summaries;
-- recommendations;
-- draft conclusions.
+### 4.11 AI Analysis Layer
 
-The AI output should be structured where downstream processing depends on it.
+Consumes validated structured data, deterministic results, authorized context and evidence to produce structured explanations, anomalies, trends, risk indicators, summaries, recommendations and draft conclusions.
 
-### 3.7 Evidence and Confidence
+### 4.12 AI Experience Layer
 
-Every material extracted value or AI finding should be traceable to source evidence where technically possible. Confidence is advisory and must not substitute for validation.
+The broader platform should support more than chat. Candidate experience patterns include Copilot/chat, inline contextual actions, side panels, review/compare, contextual Q&A, and background intelligence. For the first MVP, the highest-value pattern is source/evidence beside extracted/AI results with accept/correct/reject controls.
 
-### 3.8 Human Review
+```mermaid
+flowchart LR
+    A[Existing Enterprise Workspace] --> B[Contextual AI Action]
+    B --> C[AI Platform API]
+    C --> D[Reviewable Result]
+    D --> E[Compare with Source / Evidence]
+    E --> F[Accept / Correct / Reject]
+```
 
-Consequential results require review before authoritative application. Review must support accept, reject, and correct behavior and preserve the decision in audit/feedback data.
+### 4.13 Evidence and Confidence
 
-### 3.9 Host Adapter
+Material extracted values or AI findings should be traceable to source evidence where technically possible. Confidence is advisory and never substitutes for deterministic validation or human review.
 
-Approved results are written only through governed enterprise APIs/adapters. The AI/model never writes directly to the system of record.
+### 4.14 Audit / Feedback / Execution Telemetry
 
-## 4. First MVP Processing Flow
+Capture tool selection/execution, model/provider metadata, validation results, AI outputs, corrections, review decisions and relevant processing events. Streaming execution activity may improve UX/observability but is not itself an authorization mechanism.
+
+### 4.15 Host Adapter
+
+Approved authoritative writes occur only through governed enterprise APIs/adapters. The model never writes directly to the system of record.
+
+## 5. First MVP Processing Flow
 
 ```mermaid
 sequenceDiagram
     actor User
     participant UI as MVP UI
     participant API as AI Platform API
-    participant Doc as Document Tool Abstraction
+    participant O as Orchestrator
+    participant R as Tool Registry
+    participant Doc as Document Intelligence Tool
     participant SF as Syncfusion Adapter
     participant Val as Validation / Financial Engine
-    participant AI as AI Analysis
+    participant AI as AI Provider Gateway / Analysis
     participant Review as Human Review
 
     User->>UI: Upload financial document/form
     UI->>API: Start processing
-    API->>Doc: Extract using defined schema
-    Doc->>SF: Provider-specific operation
+    API->>O: Process document
+    O->>R: Resolve permitted extraction tool
+    R-->>O: Tool contract + policy
+    O->>Doc: Extract using defined schema
+    Doc->>SF: Provider-specific extraction
     SF-->>Doc: Extracted data + evidence
-    Doc-->>API: Platform structured result
-    API->>Val: Validate + calculate
-    Val-->>API: Authoritative calculations / warnings
-    API->>AI: Analyze validated context
-    AI-->>API: Structured findings / explanation
-    API-->>Review: Present values, evidence, warnings, findings
-    Review-->>API: Approve / correct / reject
-    API-->>User: Final reviewed result
-```
-
-## 5. Component Boundary
-
-```mermaid
-flowchart TB
-    subgraph Platform[Enterprise AI Intelligence Platform]
-        ORCH[Orchestrator]
-        CONTRACTS[Document Tool Contracts]
-        SCHEMA[Structured Schema]
-        VALID[Validation / Financial Engine]
-        ANALYSIS[AI Analysis]
-        GOV[Audit / Governance / Feedback]
-    end
-
-    subgraph Provider[Replaceable Document Provider]
-        ADAPTER[Syncfusion Adapter]
-        SDK[Syncfusion Document SDK / Agent Tools]
-    end
-
-    subgraph External[Enterprise Systems]
-        HOST[Host Adapter / API]
-        CORE[Core / BPMN / DDC]
-    end
-
-    ORCH --> CONTRACTS
-    CONTRACTS --> ADAPTER
-    ADAPTER --> SDK
-    CONTRACTS --> SCHEMA
-    SCHEMA --> VALID
-    VALID --> ANALYSIS
-    ANALYSIS --> GOV
-    GOV --> HOST
-    HOST --> CORE
+    Doc-->>O: Platform structured result
+    O->>Val: Validate + calculate
+    Val-->>O: Authoritative calculations / warnings
+    O->>AI: Analyze validated context
+    AI-->>O: Structured findings / explanation
+    O-->>Review: Source + values + warnings + findings
+    Review-->>O: Approve / correct / reject
+    O-->>API: Reviewed result + audit reference
+    API-->>UI: Final reviewed result
 ```
 
 ## 6. MVP Guardrails
@@ -167,30 +209,14 @@ flowchart TB
 - No provider-specific document model exposed as the platform/domain model.
 - Human review is mandatory for consequential extracted/derived results in the first MVP.
 - Document mutations such as permanent redaction are deterministic tool actions and must be explicitly authorized/audited.
-- All significant tool calls, inputs/outputs, validations, AI findings, and review decisions are auditable.
+- Tool authorization is enforced by code/policy, not by prompt text.
+- UI components do not directly select arbitrary AI providers for enterprise data.
+- Significant tool calls, validations, AI findings, provider/model metadata and review decisions are auditable.
 
 ## 7. MVP Provider Evaluation Questions
 
-Before selecting Syncfusion for production, test:
-
-1. Complex financial statement extraction accuracy.
-2. Form recognition against our defined schemas.
-3. Preservation of table hierarchy, periods, currencies, units, totals, and merged cells.
-4. Scanned PDF and image quality tolerance.
-5. Evidence/source-location and confidence metadata.
-6. On-premise and data-residency behavior.
-7. Performance and licensing constraints.
-8. Smart Spreadsheet suitability for financial semantics.
-9. AI Agent Tools integration model and compatibility with platform tool contracts.
+Before selecting Syncfusion for production, test complex financial statement extraction, form recognition, preservation of hierarchy/periods/currencies/units/totals, scanned documents, evidence/confidence metadata, on-premise/data residency, performance/licensing, Smart Spreadsheet financial semantics, storage integration, and AI Agent Tool compatibility with our tool registry/authorization model.
 
 ## 8. Deferred Capabilities
 
-The following remain outside the first technical slice unless needed to validate a core requirement:
-
-- autonomous workflow changes;
-- broad multi-agent autonomy;
-- customer-facing assistant;
-- general document editor feature parity;
-- advanced annotation UX;
-- production write-back to banking systems;
-- self-modifying rules or schemas.
+Outside the first technical slice unless required to validate a core requirement: autonomous workflow changes, broad multi-agent autonomy, customer-facing assistant, general document editor feature parity, advanced annotation UX, production banking write-back, self-modifying rules/schemas, and general-purpose writing/translation/grammar features.
