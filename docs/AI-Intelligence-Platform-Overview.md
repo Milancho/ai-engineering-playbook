@@ -1,34 +1,59 @@
 # AI Intelligence Platform — What We Are Building
 
 **START HERE**  
-**Purpose:** Give management, product, architecture, and development one simple picture of what we are building, what the client will experience, what we build first, which technology we intend to use, and how detailed documentation follows from this north-star document.
+**Purpose:** Give management, product, architecture, and development one simple picture of what we are building, what the client will experience, what we build first, which technology we intend to use, and how the platform expands toward Vision 2030.
 
 ## 1. Vision
 
-> Build an enterprise AI layer that understands documents and business data, uses existing enterprise capabilities as governed tools, assists employees with analysis and recommendations, and keeps humans and deterministic systems in control.
+> Build an enterprise AI layer that understands documents and business data, uses existing enterprise capabilities as governed tools, assists customers and employees with analysis, guidance and recommendations, and keeps humans and deterministic systems in control.
 
 ```mermaid
 flowchart TD
-    A[Enterprise Systems<br/>APS / Core / DDC / BPMN] --> B[AI Intelligence Platform]
-    B --> C[Understand]
-    B --> D[Analyze]
-    B --> E[Explain]
-    B --> F[Recommend]
-    B --> G[Draft]
-    B --> H[Orchestrate]
-    C --> I[Employee / User]
-    D --> I
-    E --> I
-    F --> I
-    G --> I
-    H --> I
+    V[Vision 2030<br/>Automation -> Intelligence] --> P[Aspekt AI Intelligence Platform]
+    P --> A[Assistant<br/>Customer-facing]
+    P --> C[Copilot<br/>Employee-facing]
+    P --> D[Advisor<br/>Expert-facing]
+    A --> U[Customers / Employees / Bankers]
+    C --> U
+    D --> U
 ```
 
-This is not a standalone chatbot and not a replacement for Core. It is a shared intelligence layer around deterministic enterprise systems.
+This is not a standalone chatbot and not a replacement for Core. It is a shared intelligence foundation around deterministic enterprise systems.
 
-## 2. What the Client Will Experience
+## 2. Three Experiences, One Shared Platform
 
-The target user experience is an AI Copilot embedded in the business process. The BKT demonstration is a useful product/UX reference pattern, but it is not a specification to clone.
+A key product principle is that **Assistant, Copilot and Advisor are not separate AI backends**. They are different experiences/personas running on one shared foundation.
+
+```mermaid
+flowchart TB
+    F[Shared AI Foundation]
+    F --> A[Assistant<br/>Customer]
+    F --> C[Copilot<br/>Agent / Operations]
+    F --> D[Advisor<br/>Banker / Relationship Manager]
+
+    F --> K[Approved Knowledge]
+    F --> O[Orchestration]
+    F --> I[Enterprise Integration]
+    F --> G[Governance / Audit]
+    F --> M[Monitoring / Analytics]
+    F --> X[Shared Context / Memory]
+```
+
+### Assistant
+
+Customer-facing experience for bounded self-service, information/guidance, process initiation and approved safe actions. Human handoff must remain clear and context-rich.
+
+### Copilot
+
+Employee-facing experience for retrieval, summarization, real-time guidance, drafting, document/financial analysis and next-best-action recommendations. Human remains the decision maker for consequential work.
+
+### Advisor
+
+Expert-facing experience for preparation, client context, product/policy knowledge, meeting support, recommendations and follow-up. AI improves professional judgment; it does not replace it.
+
+## 3. What the Client Will Experience First
+
+Our first rich client experience should resemble an AI Copilot embedded in the real business process. The BKT AI demonstrations remain a useful credit-workflow UX reference, not a specification to clone.
 
 ```text
 ┌─────────────────────────────────────────────────────────────┐
@@ -48,46 +73,77 @@ The target user experience is an AI Copilot embedded in the business process. Th
 └──────────────────────────────────┴──────────────────────────┘
 ```
 
-The AI experience may later appear as Copilot/chat, contextual actions, side panels, review/compare views, AI columns, smart forms, and background intelligence. All use the shared AI Platform rather than isolated direct model integrations.
+The AI experience may later appear as chat/Copilot, contextual actions, side panels, review/compare views, AI columns, smart forms, voice and background intelligence. All use the shared AI Platform rather than isolated direct model integrations.
 
-## 3. High-Level Business Capabilities
+## 4. Connected Intelligence and Shared Context
+
+The platform should preserve context as work moves across self-service, employees, experts and workflows.
+
+Candidate shared context includes identity, intent, journey/case history, case details, policy basis, evidence, next step, audit trail and follow-up status.
 
 ```mermaid
-flowchart TB
-    A[AI Copilot / Intelligence]
-    A --> B[Understand Documents]
-    A --> C[Analyze Business / Financial Data]
-    A --> D[Explain Results]
-    A --> E[Detect Problems]
-    A --> F[Recommend Next Actions]
-    A --> G[Draft Business Content]
+flowchart LR
+    A[Assistant] --> H[Human Service / Operations]
+    H --> C[Copilot]
+    C --> D[Advisor]
+    D --> R[Relationship / Outcome]
+
+    M[Shared Context / Connected Memory]
+    M -.context.-> A
+    M -.context.-> H
+    M -.context.-> C
+    M -.context.-> D
 ```
 
-Examples include document extraction and classification, financial trends/anomalies, explanation of deterministic warnings, missing-document detection, recommended next steps/conditions, and draft summaries or credit conclusions.
+The client should experience one connected institution, not a sequence of isolated bots and systems.
 
-## 4. How It Works
+## 5. High-Level Business Capabilities
 
 ```mermaid
 flowchart TB
-    U[User / Enterprise UI] --> P[AI Intelligence Platform]
-    P --> O[Orchestration / Agents]
-    P --> T[Governed Tool Registry]
-    P --> K[RAG / Knowledge - when required]
-    P --> M[AI Provider Gateway]
+    A[AI Intelligence]
+    A --> B[Understand Documents / Intent]
+    A --> C[Analyze Business / Financial Data]
+    A --> D[Retrieve Approved Knowledge]
+    A --> E[Explain Results / Warnings]
+    A --> F[Detect Problems / Missing Information]
+    A --> G[Recommend Next Actions]
+    A --> H[Draft Business Content]
+    A --> I[Summarize Cases / Meetings]
+    A --> J[Orchestrate Governed Tools]
+```
 
-    T --> D[Document Tools]
-    T --> C[Core / DDC / BPMN Tools]
-    T --> F[Financial / Validation Tools]
+Examples include document extraction/classification, financial trends/anomalies, explanation of deterministic warnings, missing-document detection, policy retrieval, recommended next steps/conditions, draft summaries or credit conclusions, case summarization, and meeting preparation.
 
-    D --> S[Syncfusion or Replaceable Provider]
-    C --> E[Existing Enterprise APIs / Services]
-    F --> E
+## 6. How It Works
+
+```mermaid
+flowchart TB
+    CH[Channels / Enterprise UI<br/>APS · Web · Mobile · Voice · Agent Console · Advisor Desk] --> EXP[Assistant / Copilot / Advisor]
+    EXP --> GP[Governance Perimeter]
+
+    GP --> IN[Input Controls<br/>Identity · Auth · PII · Injection]
+    IN --> O[Orchestration / Agents]
+    O --> T[Governed Tool Registry]
+    O --> K[RAG / Approved Knowledge - when required]
+    O --> M[AI Provider Gateway]
+
+    T --> DOC[Document Tools]
+    T --> CORE[Core / DDC / BPMN Tools]
+    T --> FIN[Financial / Validation Tools]
+    T --> EXT[Approved External Tools]
+
+    DOC --> SF[Syncfusion or Replaceable Provider]
+    CORE --> ES[Existing Enterprise APIs / Services]
+    FIN --> ES
 
     M --> L[On-Prem or Approved Cloud LLM]
 
-    O --> R[Structured Findings / Recommendations]
-    R --> H[Human Review / Approval]
-    H --> E
+    O --> OUT[Structured Findings / Drafts / Recommendations]
+    OUT --> OG[Output Controls<br/>Policy · Evidence · Quality]
+    OG --> H[Human Review / Handoff / Approval]
+    H --> ES
+    H --> AUDIT[Audit / Monitoring / Feedback]
 ```
 
 ### Responsibility Boundary
@@ -101,10 +157,11 @@ flowchart TB
 | Recommend | Persist system-of-record state |
 | Draft | Execute authoritative workflow transitions |
 | Predict | Enforce permissions and controls |
+| Retrieve / summarize | Authenticate and control account/action access |
 
 AI may select permitted tools, but prompts are not a security boundary. Authorization, policy, approval, validation and audit are enforced by the platform and deterministic systems.
 
-## 5. Architecture Baseline — Clean Architecture + Modular Monolith
+## 7. Architecture Baseline — Clean Architecture + Modular Monolith
 
 The platform starts as an **ASP.NET Core Modular Monolith** with **Clean Architecture principles per module**. We deliberately avoid premature microservice decomposition while preserving module and provider boundaries that can evolve later.
 
@@ -115,8 +172,10 @@ flowchart TB
     MM --> AG[AI / Agents]
     MM --> DOC[Documents]
     MM --> FIN[Financial Intelligence]
+    MM --> KNOW[Knowledge / RAG]
     MM --> GOV[Governance]
     MM --> INT[Core Integration]
+    MM --> CTX[Shared Context / Memory]
 
     AG --> MAF[Microsoft Agent Framework Adapter]
     DOC --> SF[Syncfusion Adapter]
@@ -130,14 +189,16 @@ flowchart TB
 - Modular Monolith first; extract services only when operational evidence justifies it.
 - Clean Architecture principles inside module boundaries.
 - Frameworks/vendors remain behind application-owned contracts/adapters.
+- Assistant, Copilot and Advisor share one platform foundation rather than separate implementations.
 - Deterministic Core remains authoritative for calculations, validation, rules, permissions, workflow authority and system-of-record writes.
 - Human-in-the-loop for consequential outcomes.
 - On-premises, hybrid and approved cloud deployment are first-class requirements.
 - Structured outputs/contracts are preferred when AI results are consumed by business systems.
+- Approved knowledge and shared context must be governed, traceable and authorization-aware.
 
 Detailed decision: `docs/architecture/ADR-002-Clean-Architecture-Modular-Monolith.md`.
 
-## 6. Technology Direction
+## 8. Technology Direction
 
 | Layer | Initial technology / approach |
 |---|---|
@@ -153,8 +214,10 @@ Detailed decision: `docs/architecture/ADR-002-Clean-Architecture-Modular-Monolit
 | AI provider access | Platform-owned AI Provider Gateway |
 | Cloud LLM options | Claude, OpenAI, Azure OpenAI and future approved providers |
 | On-prem AI | Approved local/open LLM through the same provider boundary |
-| RAG | Later capability; provider-independent ingestion/embedding/retrieval boundaries |
-| Governance | Platform-owned HITL, audit, traces, policy and evidence |
+| RAG / knowledge | Provider-independent ingestion, embeddings, retrieval, reranking and authorization filtering |
+| Shared context | Platform-owned connected case/journey context with explicit security/audit boundaries |
+| Governance | Platform-owned HITL, authentication/authorization context, policy, evidence, audit, traces and escalation |
+| Monitoring / evaluation | Technical + model + journey/business outcome metrics |
 
 ### Syncfusion position
 
@@ -174,7 +237,7 @@ flowchart TD
 
 Existing APS screens remain DevExtreme-based. We evaluate selected Syncfusion UI components for new document-centric/evidence-heavy AI screens rather than replacing the existing frontend stack.
 
-## 7. Deployment and Model Independence
+## 9. Deployment and Model Independence
 
 The same platform must support client security and residency requirements.
 
@@ -191,9 +254,37 @@ flowchart TD
 
 Agents and business services depend on platform-owned contracts, not model brands. Claude, OpenAI/Azure OpenAI, local/open models, embedding providers, retrieval stores, and document providers remain replaceable behind governed boundaries.
 
-## 8. What We Build First — MVP v0.1
+## 10. Governance — Trust Is a Platform Capability
 
-The first management-presentable vertical slice is deliberately small.
+Governance should be designed from the beginning rather than retrofitted later.
+
+```mermaid
+flowchart TD
+    RQ[Request / Context] --> AUTH[Authentication + Authorization]
+    AUTH --> CLASS[Risk / Data Classification]
+    CLASS --> POL[Policy + Allowed Knowledge / Tools / Models]
+    POL --> EXEC[AI / Tool Execution]
+    EXEC --> CHECK[Output / Evidence / Quality Checks]
+    CHECK --> DEC{Risk / Approval Requirement}
+    DEC -->|Low Risk| AUTO[Approved Automated / Deterministic Outcome]
+    DEC -->|Medium Risk| REVIEW[Human Review]
+    DEC -->|High Risk| HUMAN[Human Decision Required]
+    AUTO --> AUD[Audit / Monitoring]
+    REVIEW --> AUD
+    HUMAN --> AUD
+```
+
+### Risk posture
+
+- **Low risk:** bounded information and deterministic safe operations may be automated where policy allows.
+- **Medium risk:** AI suggests/drafts; human review and confidence/escalation policy apply.
+- **High risk:** lending decisions, investment/regulated judgment and other consequential actions remain human-led with full traceability.
+
+Authentication boundaries, approved knowledge, prompt-injection/PII controls, tool permissions, human handoff, manual verification, auditability and model monitoring are platform-level concerns.
+
+## 11. What We Build First — MVP v0.1
+
+The first management-presentable vertical slice remains deliberately small and employee-facing, consistent with the principle of proving Copilot-style augmentation before broad customer automation.
 
 ```mermaid
 flowchart TD
@@ -221,36 +312,85 @@ flowchart TD
 
 ### Explicitly deferred from MVP v0.1
 
-Multi-agent collaboration, full enterprise RAG, BPMN/DDC integration, production Core write-back, predictive ML, a complete model-routing engine, a general enterprise chatbot, and broad autonomous workflows are future phases unless discovery proves one is essential to validate the MVP.
+Customer Assistant, full enterprise RAG, BPMN/DDC integration, production Core write-back, predictive ML, a complete model-routing engine, broad autonomous workflows and multi-agent collaboration are future phases unless discovery proves one is essential to validate the MVP.
 
-## 9. BKT Reference -> Delivery Phases
-
-The BKT AI 1/2/3 demonstrations are used as a reference for the **type of credit-workflow experience** we want to reach, not as a product to clone.
+## 12. Delivery Roadmap — What We Build in Each Step
 
 ```mermaid
 flowchart LR
-    A[Phase 1<br/>Document + Financial Intelligence] --> B[Phase 2<br/>Loan Application Copilot]
-    B --> C[Phase 3<br/>Core / DDC / BPMN Intelligence]
-    C --> D[Phase 4<br/>Agentic Connected Intelligence]
+    P1[Phase 1<br/>AI Foundation + Document/Financial Intelligence] --> P2[Phase 2<br/>APS Loan Copilot]
+    P2 --> P3[Phase 3<br/>Core / DDC / BPMN Intelligence]
+    P3 --> P4[Phase 4<br/>Customer Assistant + Connected Journeys]
+    P4 --> P5[Phase 5<br/>Advisor Intelligence]
+    P5 --> P6[Phase 6<br/>Adaptive / Predictive Connected Intelligence]
 ```
 
-### Phase 1 — Document & Financial Intelligence
+### Phase 1 — AI Foundation + Document & Financial Intelligence
 
-Build the engine behind BKT-like document/financial capabilities: extraction, structured financial data, deterministic ratios/validation, AI findings, explanation, evidence and human review.
+**What we build:** document ingestion, structured extraction, deterministic validation/calculation, AI analysis, evidence, human review, basic audit and provider boundaries.
 
-### Phase 2 — Loan Application Copilot
+**Primary experience:** early employee Copilot/review experience.
 
-Make the client experience visibly BKT-like by embedding intelligence in the real loan/application workspace. Candidate governed commands include **Analyze Financials**, **Check Missing Documents**, **Explain Warnings**, **Summarize Application**, **Draft Credit Conclusion**, and **Suggest Next Action**.
+**Technology:** ASP.NET Core Modular Monolith, Clean Architecture, Microsoft Agent Framework candidate, Syncfusion Document SDK/AI tools, deterministic .NET financial tools, AI Provider Gateway, Angular with selected Syncfusion/DevExtreme UI.
+
+### Phase 2 — APS Loan Application Copilot
+
+**What we build:** embed intelligence into the real Loan Application workspace with governed commands such as Analyze Financials, Check Missing Documents, Explain Warnings, Summarize Application, Draft Credit Conclusion and Suggest Next Action.
+
+**Primary experience:** Copilot.
+
+**Technology:** Angular + DevExtreme, AI Platform API, Agent Framework adapter, Tool Registry, Document/Financial tools, governed Core APIs.
+
+**BKT relation:** this is where the visible credit-workflow experience becomes strongly BKT-like.
 
 ### Phase 3 — Core / DDC / BPMN Intelligence
 
-Expose approved Core, DDC and BPMN capabilities as governed tools. Add workflow/context intelligence, missing-information detection, blocker explanation and next-step recommendations while keeping deterministic systems authoritative.
+**What we build:** expose approved Core, DDC and BPMN capabilities as governed tools; add workflow/context intelligence, missing-information detection, blocker explanation and next-step recommendations.
 
-### Phase 4 — Agentic Connected Intelligence
+**Primary experience:** Copilot + internal operational intelligence.
 
-Introduce broader agentic workflows and multi-agent collaboration only where clear specialist boundaries and measurable value justify the complexity.
+**Technology:** Core APIs, DDC, BPMN, Tool Registry/Policy, shared context, deterministic rules, audit and HITL.
 
-## 10. Documentation Hierarchy
+### Phase 4 — Customer Assistant + Connected Journeys
+
+**What we build:** bounded customer self-service, guidance, process initiation, safe actions where allowed, intelligent handoff with full case/journey context.
+
+**Primary experience:** Assistant connected to human service/Copilot.
+
+**Technology:** Web/Mobile/Chat/Voice channels as required, shared AI Platform, RAG/approved knowledge, authentication boundaries, tool policy, escalation and connected context.
+
+### Phase 5 — Advisor Intelligence
+
+**What we build:** client briefings, relationship context, product/policy retrieval, meeting preparation, notes, follow-up drafts and next-best-action support.
+
+**Primary experience:** Advisor.
+
+**Technology:** shared context/customer 360 sources, RAG, governed external/internal data tools, AI Provider Gateway, human-controlled recommendations and audit.
+
+### Phase 6 — Adaptive / Predictive Connected Intelligence
+
+**What we build:** broader pattern recognition, anomaly detection, prediction, recommendation, learning/feedback loops and justified multi-agent collaboration.
+
+**Primary experience:** Assistant + Copilot + Advisor over one connected intelligence foundation.
+
+**Technology:** evaluation/observability, historical/event data, prediction/ML where justified, governed agentic orchestration, model routing and multi-agent only where specialist separation adds measurable value.
+
+## 13. Measurement — Measure the Journey, Not Only the Model
+
+Evaluation should combine technical/model measures with business journey outcomes.
+
+```mermaid
+flowchart TB
+    M[Platform Measurement]
+    M --> C[Customer Outcomes<br/>Resolution · Effort · Handoff Quality]
+    M --> E[Employee Effectiveness<br/>Retrieval · Handling · After-Work]
+    M --> R[Risk / Compliance<br/>Policy · Hallucination · Overrides · Audit]
+    M --> B[Business / Economics<br/>Repeat Contact · Cost · Adoption · Growth]
+```
+
+Containment or automation rate is not the only success metric. Resolution quality, continuity, trust, employee effectiveness and compliance matter at least as much in banking scenarios.
+
+## 14. Documentation Hierarchy
 
 This document sits above implementation decomposition. It is not an EPIC document.
 
@@ -259,16 +399,16 @@ flowchart TD
     A[Vision 2030] --> B[AI-Intelligence-Platform-Overview.md<br/>WHAT are we building?]
     B --> C[PRD<br/>WHAT must the product do?]
     C --> D[Architecture<br/>HOW will it work?]
-    D --> E[MVP v0.1<br/>WHAT do we build first?]
+    D --> E[MVP / Phase Scope<br/>WHAT do we build first?]
     E --> F[EPICs<br/>Large implementation areas]
     F --> G[Features]
     G --> H[Tasks]
     H --> I[Code]
 ```
 
-Every future EPIC should be traceable to an approved product/MVP capability. This prevents interesting AI experiments from expanding scope without contributing to the management-visible vertical slice.
+Every future EPIC should be traceable to an approved product/phase capability. This prevents interesting AI experiments from expanding scope without contributing to the agreed business journey.
 
-## 11. Repository Map
+## 15. Repository Map
 
 Use this file as the entry point. Detailed documentation provides drill-down, not a competing product definition.
 
@@ -285,6 +425,7 @@ flowchart TD
     E --> E2[BKT Reference]
     E --> E3[Syncfusion]
     E --> E4[Core Frontend / Backend]
+    E --> E5[AI-Enhanced Banking / Connected Service]
 
     C --> C1[Document + Financial Architecture]
     C --> C2[Hybrid AI / Model Routing]
@@ -295,24 +436,29 @@ flowchart TD
     D --> D2[Agentic AI Architect Learning Path]
 ```
 
-## 12. One-Sentence Management Explanation
+## 16. One-Sentence Management Explanation
 
-> We are building an Enterprise AI Intelligence Platform on top of our existing Core systems; the first MVP reads financial documents, converts them into structured data, uses deterministic validation and calculations, provides evidence-backed AI analysis and recommendations, and keeps the human in control, with an architecture that can later support Loan, DDC, BPMN, on-premises models and approved cloud LLMs.
+> We are building one Enterprise AI Intelligence Platform on top of our existing Core systems, exposed through connected Assistant, Copilot and Advisor experiences; we start with a small Document & Financial Intelligence Copilot MVP, keep deterministic banking logic and humans in control, and progressively connect Loan, DDC, BPMN, customer journeys and advisor workflows using the same governed, on-prem/hybrid-capable AI foundation.
 
-## 13. The Picture to Remember
+## 17. The Picture to Remember
 
 ```mermaid
 flowchart TD
-    A[Documents + Core Data] --> B[AI Intelligence Platform]
-    B --> C[Understand]
-    B --> D[Analyze]
-    B --> E[Explain]
-    B --> F[Recommend]
-    C --> G[Human Decision]
-    D --> G
-    E --> G
-    F --> G
-    G --> H[Core / BPMN / Enterprise Systems]
+    V[Vision 2030] --> P[One AI Intelligence Platform]
+    P --> A[Assistant]
+    P --> C[Copilot]
+    P --> D[Advisor]
+    P --> AG[Agents / Orchestration]
+    AG --> T[Governed Tools]
+    AG --> K[Approved Knowledge / RAG]
+    AG --> M[AI Provider Gateway]
+    T --> CORE[APS / Core / DDC / BPMN / Documents]
+    A --> H[Human / Customer Outcome]
+    C --> H
+    D --> H
+    H --> CORE
+    CORE --> F[Data / Events / History / Feedback]
+    F --> P
 ```
 
-Everything else in the repository explains how this picture will be implemented, validated, governed, and expanded.
+Everything else in the repository explains how this shared intelligence foundation will be implemented, validated, governed, measured and expanded.
