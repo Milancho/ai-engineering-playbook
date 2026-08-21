@@ -1,172 +1,267 @@
 # AI Platform — Product Requirements Document
 
-**Version:** 0.2 (Living Draft)  
+**Version:** 0.3 (Living Draft)  
 **Status:** Discovery / Product Definition  
 **Last updated:** 2026-08-21
 
 ## 1. Executive Summary
 
-The AI Platform is a reusable connected-intelligence platform for financial and enterprise applications. It is intended to embed AI directly into business workflows rather than provide a standalone chatbot.
+The AI Platform is a reusable **Enterprise AI Intelligence Platform** for financial and enterprise applications. It is intended to augment existing deterministic systems and workflows with contextual AI analysis, document intelligence, recommendations, explanation, prediction, governed actions, and measurable feedback — not to create another isolated chatbot.
 
-The platform will combine application context, approved knowledge, document intelligence, deterministic business rules and calculations, AI reasoning, secure tools/actions, human approval, and full auditability.
+The platform combines authorized application context, approved knowledge, specialized tools, document intelligence, deterministic business rules/calculations, AI reasoning, human oversight, auditability, and evaluation.
 
-The initial research is focused on financial-services use cases, especially AI-assisted loan processing and internal employee copilots, while keeping the underlying platform reusable beyond a single organization or product.
+The initial product validation will focus on internal Copilot and Document & Financial Intelligence scenarios while preserving a broader path toward the Vision 2030 internal and client-facing intelligence model.
 
-## 2. Vision
+## 2. Strategic Vision
 
-Build a shared AI intelligence layer that can support multiple applications, modules, users, and workflows through common AI capabilities.
+Vision 2030 is the primary strategic source for this product direction. It describes a transition from automation toward connected, adaptive intelligence across enterprise engines and business workflows.
 
-The platform should enable three interaction models:
+```mermaid
+flowchart LR
+    A[Digitalization] --> B[Automation]
+    B --> C[Intelligence]
+    C --> D[Adaptive / Learning Ecosystem]
+```
 
-- **AI Assistant** — customer-facing self-service and guided actions.
-- **AI Copilot** — employee-facing contextual analysis, validation, recommendations, and explanations.
-- **AI Advisor** — advanced assistance for relationship managers and other expert roles, including preparation, recommendations, and follow-up.
+The platform should support two broad intelligence directions:
 
-The long-term goal is connected intelligence: AI capabilities share governed context, knowledge, tools, rules, and audit infrastructure instead of each business module implementing an isolated AI solution.
+```mermaid
+flowchart TD
+    A[Enterprise AI Intelligence Platform] --> B[Internal Operational Intelligence]
+    A --> C[Client-Facing Intelligence]
+    B --> D[Copilots / Engine Intelligence / Operations]
+    C --> E[Assistants / Advisors / Customer Intelligence]
+```
 
-## 3. Problem Statement
+The long-term goal is connected intelligence: AI capabilities share governed context, knowledge, tools, rules, feedback, and audit infrastructure instead of each application or module implementing an isolated AI stack.
 
-Traditional enterprise AI implementations are often isolated chatbots with limited business context and limited ability to perform reliable actions. Financial applications require stronger guarantees around data access, deterministic calculations, business rules, traceability, explainability, and human control.
+## 3. Product Principles
 
-The platform must bridge the gap between LLM reasoning and trusted enterprise systems.
+1. **Connected intelligence over isolated AI.** Build a shared intelligence foundation reusable across applications and roles.
+2. **Augment deterministic engines; do not replace them with an LLM.** Rules, calculations, workflow state, and authoritative business logic remain deterministic.
+3. **Structured data before prose where business processing depends on the result.** Document extraction and AI outputs should use defined schemas when they feed validation, rules, workflows, or APIs.
+4. **Human control for consequential decisions.** AI may analyze, draft, explain, and recommend; consequential financial decisions/actions require explicit governed authority and human oversight where appropriate.
+5. **Trust is a platform capability.** Authentication, authorization, approved sources, data protection, hallucination controls, explainability, audit, and evaluation are built into the platform.
+6. **Models are replaceable dependencies.** Durable advantage comes from context, data, tools, rules, workflows, governance, feedback, and product integration.
+7. **Domain skills over unrestricted agent behavior.** Business actions should be exposed as governed skills/tools/commands with explicit inputs, permissions, outputs, and audit behavior.
+8. **Observe and recommend before autonomous adaptation.** Learning and optimization begin with measurable feedback and governed recommendations; uncontrolled self-modification is not an initial product goal.
+9. **Build vertical slices that validate the platform.** MVPs should be small enough to learn quickly but architected as reusable platform capability rather than throwaway demos.
+10. **Preserve context across experiences.** Future Assistant, Copilot, and Advisor experiences should share context and support clean handoffs rather than creating separate AI silos.
 
-## 4. Goals
+## 4. Problem Statement
 
-- Embed AI into existing business workflows and applications.
-- Provide a shared AI layer reusable by multiple modules.
+Traditional enterprise AI implementations are often isolated chatbots with limited business context and limited ability to perform reliable actions. Financial applications require stronger guarantees around data access, deterministic calculations, business rules, workflow authority, traceability, explainability, and human control.
+
+The platform must bridge probabilistic AI capabilities with trusted enterprise systems without allowing the model to become the system of record or authoritative business engine.
+
+## 5. Goals
+
+- Embed AI intelligence into existing business workflows and applications.
+- Provide a shared AI layer reusable by multiple modules and products.
+- Support Internal Operational Intelligence and future Client-Facing Intelligence.
 - Allow AI agents to access authorized business context through controlled tools/APIs.
 - Process business documents and convert relevant content into structured data.
 - Separate deterministic rules/calculations from probabilistic LLM reasoning.
-- Provide structured findings, warnings, recommendations, and explanations.
+- Provide structured findings, warnings, recommendations, drafts, and explanations.
+- Support domain-specific skills/commands instead of relying only on free-form chat.
 - Support human-in-the-loop approval for consequential actions and decisions.
-- Provide comprehensive auditability of AI requests, context, tool calls, outputs, and actions.
+- Provide comprehensive auditability of AI requests, context, tool calls, outputs, human decisions, and actions.
+- Capture feedback needed to evaluate whether recommendations were accepted, rejected, corrected, and ultimately useful.
 - Support approved knowledge sources and retrieval mechanisms.
-- Design the platform so that AI providers/models can evolve without redesigning the business platform.
-- Validate core AI/document capabilities independently before introducing unnecessary coupling to a full enterprise application.
+- Keep AI providers/models and specialized tool vendors replaceable where practical.
+- Validate core platform capabilities independently before introducing unnecessary coupling to a complete enterprise application.
 
-## 5. Non-Goals — Initial Scope
+## 6. Non-Goals — Initial Scope
 
 The initial platform is not intended to:
 
 - Allow an LLM to independently make final consequential financial decisions.
 - Use an LLM as the authoritative calculator for deterministic financial calculations.
 - Allow unrestricted direct access from an LLM to production databases or services.
+- Allow AI to autonomously rewrite production workflows, rules, schemas, or policies without governance.
 - Build a separate AI stack for every business module.
 - Depend completely on one AI model or one document-processing vendor.
 - Require integration with a complete banking solution before core AI/document capabilities can be validated.
+- Claim uncontrolled real-time "self-learning" without a defined feedback, evaluation, approval, and deployment process.
 
-These non-goals will be reviewed as the product definition evolves.
+## 7. Users and Interaction Models
 
-## 6. Users and Personas
+### 7.1 AI Assistant — Customer
+Customer-facing self-service and guided actions with controlled access to authorized data/services, contextual responses, and intelligent escalation/handoff.
 
-### 6.1 Customer
-Uses an AI Assistant for self-service, information, guided processes, and permitted secure actions.
+### 7.2 AI Copilot — Internal Employee
+Context-aware internal assistant embedded in enterprise workflows. It can aggregate business context, retrieve knowledge, process documents, run governed skills/tools, surface warnings, explain deterministic results, and create drafts/recommendations.
 
-### 6.2 Internal Employee
-Uses an AI Copilot inside the business application to understand customer/application context, analyze information, find relevant knowledge, identify missing information, and receive recommendations.
+Internal Copilot remains the leading early interaction model because it provides strong human oversight while delivering operational value.
 
-### 6.3 Relationship Manager / Expert User
-Uses an AI Advisor for customer preparation, contextual recommendations, opportunity identification, meeting support, summaries, and follow-up.
+### 7.3 AI Advisor — Relationship Manager / Expert
+Advanced assistance before, during, and after customer engagement: preparation, contextual recommendations, talking points, summaries, action items, follow-up drafting, and future CRM updates through governed tools.
 
-### 6.4 Administrator / Governance User
-Configures access, knowledge sources, tools, policies, models, monitoring, and audit controls.
+### 7.4 Administrator / Governance User
+Configures access, knowledge sources, tools, policies, models, monitoring, audit, and evaluation controls.
 
-## 7. Core AI Capabilities
+## 8. Platform Capability Model
 
-### 7.1 AI Assistant
-Customer-facing conversational and action-oriented AI with controlled access to authorized customer data and services.
-
-### 7.2 AI Copilot
-Context-aware internal assistant embedded in enterprise applications. Initial research indicates this is a strong candidate for the first product/MVP focus because it allows human oversight while delivering immediate operational value.
-
-### 7.3 AI Advisor
-Advanced expert assistance that combines customer context, historical information, products, knowledge, and recommendations.
-
-### 7.4 Document Intelligence
-The platform should support documents such as PDF, Word, Excel, images, reports, and other relevant business formats. Document processing should produce structured information suitable for validation, rules, workflows, and AI reasoning.
-
-### 7.5 Structured AI Output
-Where appropriate, AI results should be machine-readable rather than only free-form text. Examples include findings, validation results, warnings, recommendations, confidence/provenance metadata, and explanations.
-
-## 8. Initial Use Case — Loan Application Copilot
-
-A user opens a loan application in the business application. The AI Copilot receives only the context the user is authorized to access and can combine:
-
-- Customer information
-- Loan application data
-- Financial information
-- Attached documents
-- Existing obligations and relevant history
-- Approved policies and product knowledge
-- Configured business rules
-
-A conceptual processing flow is:
-
-1. Retrieve authorized loan and customer context through APIs/tools.
-2. Retrieve relevant application documents.
-3. Extract required document information into structured data.
-4. Validate extracted data and required fields.
-5. Execute deterministic business rules and financial calculations.
-6. Use AI reasoning to interpret the combined evidence where appropriate.
-7. Return structured findings, warnings, recommendations, and explanations.
-8. Present results to the responsible user for review/decision.
-9. Store an auditable record of the analysis and actions.
-
-Example questions may include:
-
-- What documents are missing?
-- Are there inconsistencies between application data and submitted documents?
-- Which configured rules failed?
-- Why did a rule fail?
-- Summarize this loan application.
-- What should the credit officer review before making a decision?
-
-## 9. Connected Intelligence
-
-The platform should avoid isolated AI implementations for individual modules. Shared platform capabilities should include:
+```mermaid
+flowchart TD
+    U[Users / Systems] --> X[Assistant / Copilot / Advisor]
+    X --> P[AI Platform / Orchestration]
+    P --> C[Context]
+    P --> K[Knowledge]
+    P --> T[Tools / Domain Skills]
+    P --> M[Models]
+    P --> F[Feedback / Evaluation]
+    T --> D[Documents]
+    T --> R[Rules / Validation]
+    T --> W[Workflow / BPMN]
+    T --> E[Enterprise APIs / Engines]
+    P --> A[Audit / Governance]
+```
 
 ### Context
-Authorized business context from systems such as customer, CRM, loans, accounts, DDC/DAC, workflows, and other application modules.
+Authorized business context from customer, CRM, loans, accounts, dynamic data, workflows, documents, analytics, and other application modules.
 
 ### Knowledge
-Approved documents, policies, procedures, product information, and other governed knowledge sources.
+Approved policies, procedures, product information, documentation, and other governed knowledge sources.
 
-### Tools
-Controlled operations exposed to AI agents through application APIs and specialized tools.
+### Tools and Domain Skills
+Controlled capabilities exposed to AI agents. Skills should have explicit contracts, permissions, structured outputs where appropriate, and auditable execution.
 
-### Rules
-Deterministic validation, business rules, eligibility logic, and calculations implemented outside the LLM.
+### Rules and Deterministic Engines
+Validation, eligibility, calculations, workflow state, and other authoritative logic remain outside the LLM.
 
 ### Intelligence
-LLM/AI capabilities used for language understanding, reasoning where appropriate, summarization, explanation, classification, and recommendations.
+LLM/AI capabilities are used for language understanding, classification, extraction support, reasoning where appropriate, summarization, explanation, recommendations, drafting, and prediction.
 
-## 10. Agent and Orchestration Layer
+### Feedback and Evaluation
+The platform should progressively capture recommendation → decision → outcome relationships so quality and business value can be measured and improvements can be governed.
 
-The platform is expected to require an orchestration layer responsible for coordinating context, knowledge retrieval, document tools, business tools, rules, models, permissions, and audit.
+## 9. Initial Use Case — Loan Application Copilot
 
-The exact agent framework and orchestration architecture are intentionally **TBD** during discovery.
+A user working with a loan/credit case can invoke governed Copilot skills against authorized case context.
 
-## 11. Document Processing
+```mermaid
+flowchart TD
+    A[Loan / Credit Case] --> B[AI Copilot]
+    B --> C[Domain Skill / Command]
+    C --> D[Authorized Context + Documents]
+    D --> E[Structured Extraction]
+    E --> F[Validation / Financial Calculations / Rules]
+    F --> G[AI Analysis / Explanation / Draft]
+    G --> H[Human Review / Decision]
+    H --> I[Audit + Feedback]
+```
 
-Document processing is a major platform capability under evaluation.
+Candidate capabilities include:
 
-### Syncfusion Document SDK AI Tools
+- Extract and classify submitted documents.
+- Detect missing required documents using authoritative requirement configuration plus AI-assisted matching/classification.
+- Extract financial statements into a structured financial model.
+- Run deterministic financial ratios and configured rules.
+- Explain failed rules and warnings.
+- Summarize the application and evidence.
+- Draft credit proposals, conclusions, executive summaries, or conditions for human review.
+- Inspect workflow gates/blockers and suggest next actions without replacing workflow authority.
 
-Syncfusion Document SDK AI Agent Tools are currently being evaluated as a possible **Document Tool Layer**. Potential responsibilities include document extraction, processing, conversion, form/document data extraction, redaction, and related document operations.
+## 10. Document-to-Business-Object Pattern
 
-Syncfusion should not currently be treated as the entire AI platform. The working hypothesis is that it can provide specialized document tools callable by the orchestration/agent layer.
+Document processing must not stop at free-form AI text when downstream business processing requires structured information.
 
-**Status:** Under Evaluation
+```mermaid
+flowchart LR
+    A[Document] --> B[Extract]
+    B --> C[Structured Schema]
+    C --> D[Validate]
+    D --> E[Human / Policy Review]
+    E --> F[Apply to Business Object]
+```
+
+The platform should support documents such as PDF, Word, Excel, images, reports, and other relevant business formats. Exact MVP formats remain to be finalized.
+
+## 11. Document Tool Layer and Syncfusion
+
+Syncfusion Document Processing AI capabilities are under evaluation as a specialized document provider, not as the entire AI Platform.
+
+The reviewed Syncfusion material separates development-time Agent Skills, Agentic UI Builder and AI Coding Assistant capabilities from runtime AI Agent Tools. Runtime Agent Tools are relevant to the product because they can support dynamic document workflows such as extraction, redaction, conversion, and document/report processing.
+
+```mermaid
+flowchart LR
+    A[AI Platform] --> B[Document Tool Abstraction]
+    B --> C[Syncfusion Implementation]
+    C --> D[PDF / Word / Excel / PowerPoint / Markdown]
+    D --> E[Structured Result]
+```
+
+**Status:** Under Evaluation. Architecture must preserve an abstraction boundary so vendor choice does not define the entire platform.
 
 ## 12. Business Rules and Deterministic Calculations
 
 A core design principle is separation between deterministic business logic and LLM reasoning.
 
-Examples such as financial ratios, eligibility thresholds, date calculations, fees, repayment calculations, and policy rules should be executed by deterministic code/rule services where possible.
+```mermaid
+flowchart LR
+    A[Structured Business Data] --> B[Rules / Calculation Engine]
+    B --> C[Authoritative Result]
+    C --> D[AI Explanation / Correlation]
+    D --> E[Human Review]
+```
 
-The LLM may explain results, combine evidence, summarize findings, or help a user understand why a deterministic rule produced a result, but it should not become the authoritative calculation engine.
+Examples such as financial ratios, eligibility thresholds, date calculations, fees, repayment calculations, policy rules, and workflow state should be executed by deterministic services/engines where possible. AI can explain and correlate these results but is not their authority.
 
-## 13. Integrations — Candidates
+## 13. Intelligent Enterprise Engines — Strategic Direction
+
+Vision 2030 extends beyond a single Copilot. The long-term platform should augment existing engines with intelligence while preserving their deterministic authority.
+
+Candidate domains include:
+
+- Dynamic Data / DDC intelligence
+- Validation intelligence
+- BPMN / workflow intelligence
+- Document intelligence
+- Reporting / analytics intelligence
+- Collaboration/activity intelligence
+
+```mermaid
+flowchart TD
+    A[AI Intelligence Layer] --> B[Dynamic Data]
+    A --> C[Validation]
+    A --> D[BPMN / Workflow]
+    A --> E[Documents]
+    A --> F[Analytics]
+    B --> G[Observe / Recommend]
+    C --> G
+    D --> G
+    E --> G
+    F --> G
+    G --> H[Governed Change / Human Decision]
+```
+
+Examples of future intelligence include detecting data-quality gaps, suggesting data structures/metadata, analyzing workflow bottlenecks, recommending rule improvements, predicting operational risks, and identifying redundant configuration. These are strategic directions, not committed MVP scope.
+
+## 14. Feedback and Learning Model
+
+"Learning" must be defined as a governed engineering capability, not a vague promise that the system changes itself.
+
+```mermaid
+flowchart TD
+    A[Context / Evidence] --> B[Rules + AI]
+    B --> C[Recommendation / Prediction]
+    C --> D[Human / System Decision]
+    D --> E[Observed Outcome]
+    E --> F[Feedback / Evaluation]
+    F --> G[Approved Improvement Process]
+    G --> B
+```
+
+For each future adaptive use case, architecture must specify whether AI may only observe, recommend, predict, retrain offline, propose configuration changes, or execute changes — and what approval is required.
+
+## 15. Agent and Orchestration Layer
+
+The platform is expected to require an orchestration layer responsible for coordinating context, knowledge retrieval, domain skills/tools, document tools, deterministic engines, models, permissions, audit, and evaluation.
+
+The exact agent framework and orchestration architecture remain **TBD** during discovery.
+
+## 16. Integrations — Candidates
 
 Potential integration categories include:
 
@@ -174,20 +269,19 @@ Potential integration categories include:
 - Customer and CRM
 - Loan applications
 - Document repositories
-- DDC/DAC or dynamic-data services
+- Dynamic data / DDC/DAC services
 - BPM/workflow engines
+- Validation/rules engines
 - API platforms/integration layers
 - Communication/social channels
 - Reporting and analytics
 - Identity and access management
 
-Specific integrations are **TBD** and should be selected based on the MVP.
+Deep integration with a complete banking SPA/.NET solution remains deferred until the standalone platform vertical slice is validated. The standalone implementation must nevertheless be reusable so later integration does not require a rewrite.
 
-The current working direction is to defer deep integration with a complete banking SPA/.NET solution until the standalone AI/document capabilities have been validated. The standalone prototype must nevertheless be designed as reusable service/platform capability so that later integration does not require a rewrite.
+## 17. Security, Governance and Trust
 
-## 14. Security, Governance and Trust
-
-The platform must be designed for enterprise and financial-services controls. Requirements under investigation include:
+The platform must be designed for enterprise and financial-services controls, including:
 
 - Authentication and authorization
 - User-context-aware data access
@@ -196,153 +290,163 @@ The platform must be designed for enterprise and financial-services controls. Re
 - Approved knowledge sources
 - Prompt/context protection
 - Hallucination risk controls
-- Human-in-the-loop approval
-- Explainability
+- Human-in-the-loop oversight
+- Explainability and provenance
 - Audit trail
 - Model/provider governance
 - Sensitive-data handling
 - Environment separation
 - Monitoring and observability
+- Evaluation and quality controls
+- Transparent handling of AI-assisted actions where required
 
-Detailed requirements are **TBD**.
+Detailed requirements remain **TBD**.
 
-## 15. Functional Requirements
+## 18. Functional Requirements — Capability Areas
 
-Detailed functional requirements will be created after additional discovery. Initial capability areas are:
+Detailed requirements will be decomposed after additional discovery and architecture work. Current capability areas are:
 
 - Context retrieval
 - Knowledge retrieval
+- Domain skill/tool execution
 - Document processing
 - Structured extraction
 - Validation
-- Rule execution
+- Rule/calculation execution
 - AI reasoning
 - Structured recommendations/findings
+- Draft generation
 - Explanations
-- Tool/action execution
-- Human approval
+- Workflow awareness
+- Human approval/review
 - Audit and traceability
+- Feedback capture
+- Evaluation
 
-## 16. Non-Functional Requirements
+## 19. Non-Functional Requirements
 
-To be defined during architecture and MVP definition. Areas to cover include:
+To be defined during architecture and MVP definition. Areas include security, performance, scalability, availability, reliability, observability, auditability, extensibility, model portability, vendor portability, data privacy, and cost controls.
 
-- Security
-- Performance
-- Scalability
-- Availability
-- Reliability
-- Observability
-- Auditability
-- Extensibility
-- Model portability
-- Data privacy
-- Cost controls
-
-## 17. MVP
+## 20. MVP — Proposed Direction
 
 **Status: Proposed direction — not yet finalized.**
 
-### Preferred first MVP direction
+The preferred first vertical slice is **AI Platform MVP — Document & Financial Intelligence**.
 
-Start with a **standalone .NET AI/document-intelligence prototype using Syncfusion components**, rather than immediately integrating the experiment into a complete banking SPA/.NET solution.
+Syncfusion is a candidate implementation enabler, not the name or boundary of the MVP.
 
-The prototype should be deliberately small but architected as reusable platform capability, not throwaway demo code. It should validate the difficult AI-engineering assumptions independently of legacy/application integration concerns.
-
-A candidate end-to-end scenario is:
-
-1. Provide a loan/application document and supporting financial document(s).
-2. Process the documents through the document tool layer.
-3. Extract required information into a defined structured schema.
-4. Validate the extracted data.
-5. Execute a small set of deterministic financial calculations and business rules.
-6. Use AI to summarize and explain the evidence and deterministic results.
-7. Present structured findings, warnings, and explanations to a human reviewer.
-8. Capture sufficient audit/trace information to understand how the result was produced.
-
-The initial UI should remain intentionally lightweight. MVP effort should prioritize document tools, structured contracts, deterministic rules, agent/tool orchestration, guardrails, auditability, and evaluation rather than a rich front-end experience.
-
-### Subsequent integration direction
-
-After the standalone capability is proven, a later MVP/phase should replace manually supplied context with authorized context from an existing banking application:
-
-```text
-Banking SPA
-  -> .NET Core APIs
-  -> Customer / Loan / Documents
-  -> AI Platform
+```mermaid
+flowchart TD
+    A[Upload Financial Document] --> B[Document Tool Layer]
+    B --> C[Structured Financial Extraction]
+    C --> D[Validation]
+    D --> E[Financial Spreading / Model]
+    E --> F[Deterministic Ratios / Rules]
+    F --> G[Structured Findings / Warnings]
+    G --> H[AI Explanation / Summary]
+    H --> I[Human Review]
+    I --> J[Audit + Feedback]
 ```
 
-This allows the AI capability to be validated first and the enterprise integration to be introduced as a separate concern.
+The initial UI should remain lightweight. MVP effort should prioritize document tools, structured contracts, deterministic calculations/rules, orchestration, guardrails, auditability, feedback, and evaluation.
 
-The MVP will be finalized after the remaining research and architecture analysis.
+### Subsequent Integration Direction
 
-## 18. Future / Phase 2+
+After the standalone capability is proven:
 
-Candidate capabilities include:
+```mermaid
+flowchart LR
+    A[Banking SPA] --> B[.NET Core APIs]
+    B --> C[Customer / Loan / Documents]
+    C --> D[AI Platform]
+    D --> E[Copilot Experience]
+```
 
-- Integration with an existing SPA/.NET Core banking solution
-- Real customer and loan context with production-grade authorization boundaries
-- Customer AI Assistant
-- AI Advisor
-- Additional financial modules
-- Cross-module Customer 360 intelligence
-- Advanced workflow actions
-- Multi-agent scenarios
-- Additional document types and document workflows
-- Broader knowledge/RAG capabilities
-- Proactive intelligence and recommendations
+## 21. Future / Phase 2+
 
-These are hypotheses, not committed scope.
+Candidate capabilities include banking-platform integration, production-grade customer/loan context, customer AI Assistant, AI Advisor, cross-module intelligence, workflow intelligence, dynamic-data intelligence, validation intelligence, broader knowledge/RAG, proactive recommendations, multi-agent scenarios, and governed adaptive/learning capabilities.
 
-## 19. Open Questions
+These remain hypotheses, not committed scope.
 
-- What exact document/business scenario should be the first standalone MVP demonstration?
+## 22. Open Questions
+
+- Which exact financial documents and schemas should the first MVP support?
+- Which ratios/rules are sufficient to prove the deterministic layer?
 - Which AI/LLM provider(s) should be supported initially?
 - Cloud, on-premises, or hybrid deployment?
 - Which agent/orchestration framework should be used?
 - What responsibilities should Syncfusion AI Agent Tools own?
-- What document types and extraction scenarios are required for MVP?
-- How should the Rules Engine be designed/integrated?
-- What knowledge/RAG architecture is required?
+- Is additional OCR/extraction technology required beyond the evaluated Syncfusion capabilities?
+- How should the Rules/Validation Engine be designed or integrated?
+- What knowledge/RAG architecture is required for the first and later use cases?
 - What forms of agent memory are required, if any?
 - Which actions can AI execute automatically versus requiring approval?
-- What level of explainability/provenance is required per output?
+- What provenance/explainability is required per output?
 - What audit information must be persisted?
+- What feedback/outcome data can be captured in the MVP?
+- What evaluation metrics determine MVP success?
 - Which core systems should be integrated first after the standalone MVP?
-- What evaluation metrics will determine MVP success?
-- Which parts of the standalone prototype must be designed as independently deployable/reusable services from the start?
+- Which parts of the standalone prototype must be independently deployable/reusable from the start?
 
-## 20. Decision Log
+## 23. Decision Log
 
 | ID | Decision / Hypothesis | Status | Rationale |
 |---|---|---|---|
 | D-001 | Build a shared AI platform rather than isolated module-specific AI solutions. | Proposed | Supports connected intelligence and reuse. |
-| D-002 | Keep deterministic financial calculations and business rules outside the LLM. | Proposed | Reliability, testability, auditability, and repeatability. |
-| D-003 | Evaluate Syncfusion Document SDK AI Tools as the Document Tool Layer. | Under Evaluation | Specialized document-processing capabilities may be exposed as agent tools. |
+| D-002 | Keep deterministic calculations, rules, and authoritative workflow state outside the LLM. | Proposed | Reliability, testability, auditability, and repeatability. |
+| D-003 | Evaluate Syncfusion Document Processing AI Agent Tools behind a Document Tool abstraction. | Under Evaluation | Provides specialized document capabilities without making the platform vendor-defined. |
 | D-004 | Use human-in-the-loop for consequential financial decisions/actions. | Proposed | Governance, risk control, and accountability. |
-| D-005 | Treat AI models as replaceable platform dependencies rather than the product itself. | Proposed | Reduces model/vendor coupling and supports future evolution. |
-| D-006 | Prioritize AI Copilot as the leading product interaction model. | Proposed | Internal usage offers high value with stronger human oversight. |
-| D-007 | Prefer a standalone .NET + Syncfusion AI/document MVP before deep banking-platform integration. | Proposed | Separates AI/document risks from enterprise integration complexity while preserving a path to later integration. |
-| D-008 | Keep the initial MVP UI lightweight and prioritize reusable backend/tooling capability. | Proposed | Focuses learning on the highest-risk AI engineering and document-processing concerns. |
+| D-005 | Treat AI models as replaceable platform dependencies rather than the product itself. | Proposed | Durable value comes from context, tools, data, governance, and integration. |
+| D-006 | Prioritize internal AI Copilot as the leading early interaction model. | Proposed | Lower-risk, governable, high-value starting pattern. |
+| D-007 | Prefer a standalone Document & Financial Intelligence vertical slice before deep banking-platform integration. | Proposed | Separates platform-learning risks from enterprise integration complexity. |
+| D-008 | Keep the initial MVP UI lightweight and prioritize reusable backend/tooling capability. | Proposed | Focuses learning on highest-risk platform capabilities. |
+| D-009 | Introduce governed domain skills/commands as a core interaction pattern. | Proposed | Makes agent behavior explicit, permissionable, testable, and auditable. |
+| D-010 | Capture recommendation → decision → outcome feedback as the basis for evaluation and future learning. | Proposed | Makes improvement measurable and avoids vague self-learning claims. |
+| D-011 | AI may augment enterprise engines, but engines remain authoritative for deterministic execution. | Proposed | Aligns Vision 2030 with safe, testable architecture. |
 
-## 21. Research and References
+## 24. Research and References
 
-### Research reviewed
+### Primary strategic source
 
-1. **BKT AI demonstration — Video 1** — initial analysis of AI-assisted loan/application workflow and structured recommendations.
-2. **BKT AI demonstration — Video 2** — pending detailed analysis.
-3. **BKT AI demonstration — Video 3** — pending detailed analysis.
-4. **Syncfusion — AI-Powered Development with Document SDK AI Tools** — evaluation in progress.
-5. **Fintech News Switzerland — AI in Banking: From Chatbots to Connected Intelligence** — Assistant/Copilot/Advisor model and connected-intelligence strategy.
+- **Vision 2030 — From Automation to Intelligence: Unified AI Framework for Self-Learning and Adaptive Banking Systems** — strategic direction for internal/client-facing intelligence and AI-augmented enterprise engines.
 
-### Working research principle
+### Reviewed reference patterns
 
-Research references provide inspiration and evidence. They do not automatically become product requirements. Each material change should be evaluated before being incorporated into committed MVP scope.
+- **BKT AI Demonstration (Parts 1–3)** — one demonstration split for analysis; reference patterns for embedded credit Copilot, domain commands, document extraction, financial spreading, rules/warnings, workflow awareness, drafting, and human review.
+- **Fintech News Switzerland — AI in Banking: Moving from Chatbots to Connected Intelligence** — external pattern for Assistant/Copilot/Advisor roles, shared context, trust/governance, and internal Copilot as a practical starting point.
+- **Syncfusion — AI-Powered Development with Document Processing Components** — technology research covering Agent Skills, Agentic UI Builder, AI Agent Tools, and AI Coding Assistant; runtime Agent Tools are being evaluated for the Document Tool Layer.
+
+Detailed analyses are maintained under `docs/research/` so research evidence remains separate from committed product requirements.
+
+```mermaid
+flowchart TD
+    A[Vision 2030] --> E[Product Principles]
+    B[BKT Demo] --> E
+    C[Connected Intelligence Research] --> E
+    D[Syncfusion Research] --> E
+    E --> F[PRD]
+    F --> G[Architecture]
+    G --> H[MVP / EPICs / Features]
+```
 
 ---
 
 ## Change Log
+
+### v0.3 — 2026-08-21
+
+- Elevated Vision 2030 as the primary strategic source.
+- Reframed the product as an Enterprise AI Intelligence Platform.
+- Added explicit Product Principles.
+- Added Internal Operational Intelligence vs Client-Facing Intelligence direction.
+- Added governed domain skills/commands.
+- Added document-to-business-object structured processing pattern.
+- Added AI-augmented deterministic enterprise engines as a strategic direction.
+- Added feedback/evaluation loop and clarified the meaning of future learning/adaptation.
+- Consolidated BKT Parts 1–3 as one demonstration source.
+- Refined Syncfusion's role as a candidate Document Tool provider rather than the platform itself.
+- Refined the MVP to Document & Financial Intelligence.
+- Added mandatory diagrams/flows throughout major concepts.
 
 ### v0.2 — 2026-08-21
 
@@ -350,7 +454,6 @@ Research references provide inspiration and evidence. They do not automatically 
 - Separated validation of AI/document capabilities from later banking-platform integration.
 - Clarified that the prototype should be reusable platform capability rather than throwaway demo code.
 - Added lightweight-UI guidance for the initial MVP.
-- Added corresponding decisions and open questions.
 
 ### v0.1 — 2026-08-21
 
@@ -360,4 +463,3 @@ Research references provide inspiration and evidence. They do not automatically 
 - Added initial Loan Application Copilot use case.
 - Added Document Intelligence and Syncfusion evaluation.
 - Established deterministic rules/calculations versus LLM reasoning principle.
-- Added security/governance areas, open questions, decision log, and initial MVP hypothesis.
