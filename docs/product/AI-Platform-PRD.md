@@ -1,6 +1,6 @@
 # AI Platform — Product Requirements Document
 
-**Version:** 0.1 (Living Draft)  
+**Version:** 0.2 (Living Draft)  
 **Status:** Discovery / Product Definition  
 **Last updated:** 2026-08-21
 
@@ -42,6 +42,7 @@ The platform must bridge the gap between LLM reasoning and trusted enterprise sy
 - Provide comprehensive auditability of AI requests, context, tool calls, outputs, and actions.
 - Support approved knowledge sources and retrieval mechanisms.
 - Design the platform so that AI providers/models can evolve without redesigning the business platform.
+- Validate core AI/document capabilities independently before introducing unnecessary coupling to a full enterprise application.
 
 ## 5. Non-Goals — Initial Scope
 
@@ -52,6 +53,7 @@ The initial platform is not intended to:
 - Allow unrestricted direct access from an LLM to production databases or services.
 - Build a separate AI stack for every business module.
 - Depend completely on one AI model or one document-processing vendor.
+- Require integration with a complete banking solution before core AI/document capabilities can be validated.
 
 These non-goals will be reviewed as the product definition evolves.
 
@@ -181,6 +183,8 @@ Potential integration categories include:
 
 Specific integrations are **TBD** and should be selected based on the MVP.
 
+The current working direction is to defer deep integration with a complete banking SPA/.NET solution until the standalone AI/document capabilities have been validated. The standalone prototype must nevertheless be designed as reusable service/platform capability so that later integration does not require a rewrite.
+
 ## 14. Security, Governance and Trust
 
 The platform must be designed for enterprise and financial-services controls. Requirements under investigation include:
@@ -237,11 +241,39 @@ To be defined during architecture and MVP definition. Areas to cover include:
 
 ## 17. MVP
 
-**Status: Not yet finalized.**
+**Status: Proposed direction — not yet finalized.**
 
-Current leading candidate:
+### Preferred first MVP direction
 
-> An internal AI Copilot embedded in a loan-application workflow that can obtain authorized application context, analyze attached documents, execute deterministic validations/rules, and present structured findings and explanations to a human user.
+Start with a **standalone .NET AI/document-intelligence prototype using Syncfusion components**, rather than immediately integrating the experiment into a complete banking SPA/.NET solution.
+
+The prototype should be deliberately small but architected as reusable platform capability, not throwaway demo code. It should validate the difficult AI-engineering assumptions independently of legacy/application integration concerns.
+
+A candidate end-to-end scenario is:
+
+1. Provide a loan/application document and supporting financial document(s).
+2. Process the documents through the document tool layer.
+3. Extract required information into a defined structured schema.
+4. Validate the extracted data.
+5. Execute a small set of deterministic financial calculations and business rules.
+6. Use AI to summarize and explain the evidence and deterministic results.
+7. Present structured findings, warnings, and explanations to a human reviewer.
+8. Capture sufficient audit/trace information to understand how the result was produced.
+
+The initial UI should remain intentionally lightweight. MVP effort should prioritize document tools, structured contracts, deterministic rules, agent/tool orchestration, guardrails, auditability, and evaluation rather than a rich front-end experience.
+
+### Subsequent integration direction
+
+After the standalone capability is proven, a later MVP/phase should replace manually supplied context with authorized context from an existing banking application:
+
+```text
+Banking SPA
+  -> .NET Core APIs
+  -> Customer / Loan / Documents
+  -> AI Platform
+```
+
+This allows the AI capability to be validated first and the enterprise integration to be introduced as a separate concern.
 
 The MVP will be finalized after the remaining research and architecture analysis.
 
@@ -249,6 +281,8 @@ The MVP will be finalized after the remaining research and architecture analysis
 
 Candidate capabilities include:
 
+- Integration with an existing SPA/.NET Core banking solution
+- Real customer and loan context with production-grade authorization boundaries
 - Customer AI Assistant
 - AI Advisor
 - Additional financial modules
@@ -263,7 +297,7 @@ These are hypotheses, not committed scope.
 
 ## 19. Open Questions
 
-- What exact business scenario should be the MVP?
+- What exact document/business scenario should be the first standalone MVP demonstration?
 - Which AI/LLM provider(s) should be supported initially?
 - Cloud, on-premises, or hybrid deployment?
 - Which agent/orchestration framework should be used?
@@ -275,8 +309,9 @@ These are hypotheses, not committed scope.
 - Which actions can AI execute automatically versus requiring approval?
 - What level of explainability/provenance is required per output?
 - What audit information must be persisted?
-- Which core systems should be integrated first?
+- Which core systems should be integrated first after the standalone MVP?
 - What evaluation metrics will determine MVP success?
+- Which parts of the standalone prototype must be designed as independently deployable/reusable services from the start?
 
 ## 20. Decision Log
 
@@ -287,7 +322,9 @@ These are hypotheses, not committed scope.
 | D-003 | Evaluate Syncfusion Document SDK AI Tools as the Document Tool Layer. | Under Evaluation | Specialized document-processing capabilities may be exposed as agent tools. |
 | D-004 | Use human-in-the-loop for consequential financial decisions/actions. | Proposed | Governance, risk control, and accountability. |
 | D-005 | Treat AI models as replaceable platform dependencies rather than the product itself. | Proposed | Reduces model/vendor coupling and supports future evolution. |
-| D-006 | Prioritize AI Copilot as the leading MVP interaction model. | Proposed | Internal usage offers high value with stronger human oversight. |
+| D-006 | Prioritize AI Copilot as the leading product interaction model. | Proposed | Internal usage offers high value with stronger human oversight. |
+| D-007 | Prefer a standalone .NET + Syncfusion AI/document MVP before deep banking-platform integration. | Proposed | Separates AI/document risks from enterprise integration complexity while preserving a path to later integration. |
+| D-008 | Keep the initial MVP UI lightweight and prioritize reusable backend/tooling capability. | Proposed | Focuses learning on the highest-risk AI engineering and document-processing concerns. |
 
 ## 21. Research and References
 
@@ -306,6 +343,14 @@ Research references provide inspiration and evidence. They do not automatically 
 ---
 
 ## Change Log
+
+### v0.2 — 2026-08-21
+
+- Added the proposed standalone .NET + Syncfusion first-MVP direction.
+- Separated validation of AI/document capabilities from later banking-platform integration.
+- Clarified that the prototype should be reusable platform capability rather than throwaway demo code.
+- Added lightweight-UI guidance for the initial MVP.
+- Added corresponding decisions and open questions.
 
 ### v0.1 — 2026-08-21
 
