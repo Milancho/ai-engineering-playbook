@@ -1,7 +1,7 @@
 # Syncfusion Document Solutions — Research Analysis
 
 **Sources reviewed:** Syncfusion Essential Studio Document Solutions 2026 Volume 1 and Volume 2; Document Processing Libraries overview; AI Agent-Driven Document Workflows webinar; AI-Powered DOCX Editing/Review webinar  
-**Status:** Evaluated for first MVP discovery  
+**Status:** Evaluated for first MVP discovery and mapped against current APS/Core capabilities  
 **Purpose:** Identify reusable Syncfusion document capabilities that may accelerate the Enterprise AI Intelligence Platform without making Syncfusion the platform itself.
 
 ## Research Rule
@@ -94,7 +94,7 @@ flowchart TD
 
 ## Consolidated Product Interpretation
 
-The reviewed material now supports four distinct layers:
+The reviewed material supports four distinct layers:
 
 ```mermaid
 flowchart TB
@@ -169,6 +169,58 @@ flowchart LR
     D --> E[Approved Model Provider]
 ```
 
+## Mapping Against Current APS/Core
+
+The later Core discovery materially improves how Syncfusion should be positioned.
+
+The current APS frontend already has AI-ready UI patterns through its DevExtreme stack, while the Core backend already owns authoritative Loan, DDC, Validation, Credit Scoring, AML, Financial Analysis, lifecycle/status and integration capabilities. Therefore Syncfusion should not expand into either the enterprise UI authority or the banking business engine.
+
+```mermaid
+flowchart TB
+    UI[APS / DevExtreme Frontend] --> AIP[Enterprise AI Intelligence Platform]
+    AIP --> DOC[Document Intelligence / Processing Contracts]
+    DOC --> SF[Syncfusion Adapter]
+    SF --> SDK[Syncfusion Document SDK / Agent Tools]
+
+    AIP --> CORETOOLS[Governed Core Tool Contracts]
+    CORETOOLS --> CORE[Loan / DDC / Validation / Scoring / AML / Financial Analysis]
+
+    AIP --> MODEL[AI Provider Gateway]
+```
+
+### Boundary Clarification
+
+**Syncfusion candidate responsibility:**
+
+- document extraction/recognition;
+- deterministic document processing;
+- document conversion/redaction/generation;
+- spreadsheet/document capabilities;
+- optional document-review UI components where useful.
+
+**APS/Core responsibility:**
+
+- authoritative application/customer/business data;
+- DDC metadata and values;
+- validation and dependencies;
+- financial/loan calculations;
+- lifecycle/status transitions;
+- permissions;
+- scoring/AML/business integrations;
+- system-of-record writes.
+
+**AI Platform responsibility:**
+
+- orchestration;
+- tool registry/policy;
+- provider/model routing;
+- context/security boundary;
+- structured AI analysis;
+- evidence/audit;
+- human review/approval flows.
+
+This boundary is important because it prevents vendor features from becoming product architecture accidentally.
+
 ## Candidate Platform Contracts
 
 Candidate responsibilities/contracts include:
@@ -178,13 +230,16 @@ Candidate responsibilities/contracts include:
 - `IDocumentStorage`;
 - platform tool registry/catalog contracts;
 - `IFinancialTools` / deterministic financial operations;
+- Core/DDC/Validation tool adapters;
 - AI provider gateway/routing contracts.
 
 Names remain architecture hypotheses, not final API contracts.
 
 ## First MVP Relevance
 
-The strongest first-MVP candidates remain structured financial/table extraction, form recognition, platform-owned schemas, deterministic validation/calculation, AI analysis, evidence and human review. The new webinar findings refine how these components interact rather than expanding the MVP into a general-purpose document editor.
+The strongest first-MVP candidates remain structured financial/table extraction, form recognition, platform-owned schemas, deterministic validation/calculation, AI analysis, evidence and human review.
+
+The Core discovery suggests the MVP should deliberately prepare for a later mapping into existing DDC/Loan/Financial Analysis structures rather than inventing a parallel banking domain model.
 
 ```mermaid
 flowchart TD
@@ -198,7 +253,7 @@ flowchart TD
     H --> I[Findings + Evidence]
     I --> J[Review / Compare]
     J --> K[Human Decision]
-    K --> L[Audit / Feedback]
+    K --> L[Future Core Adapter -> DDC / Loan / Financial Analysis]
 ```
 
 ## Risks and Unknowns
@@ -207,6 +262,8 @@ Production suitability still requires evidence for real financial documents, sca
 
 ## Current Conclusion
 
-The reviewed Syncfusion material **confirms and sharpens** the current product direction. Syncfusion is a serious candidate for the specialized document capability layer of the first Document & Financial Intelligence vertical slice. The Enterprise AI Intelligence Platform must retain ownership of orchestration, tool policy, schemas, validation, deterministic rules/calculations, provider routing, governance, audit, human approval, and host integration.
+The reviewed Syncfusion material **confirms and sharpens** the current product direction. Syncfusion remains a serious candidate for the specialized document capability layer of the first Document & Financial Intelligence vertical slice.
+
+The Core discovery now makes the intended boundary clearer: Syncfusion augments document handling; APS/Core remains the deterministic banking authority; the Enterprise AI Intelligence Platform connects the two through governed abstractions, structured schemas, orchestration, policy, audit and human review.
 
 No conclusion has been made that Syncfusion must be the final production provider.
