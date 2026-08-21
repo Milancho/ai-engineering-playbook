@@ -64,6 +64,66 @@ This includes:
 
 Conversation outside the repository may use other languages, but anything committed to or recorded in the repository must be normalized to professional English.
 
+## Mandatory Visual Explanation Rule
+
+**All significant technical, architectural, product, workflow, and agent-engineering explanations must include at least one visual flow or diagram whenever a process, dependency, interaction, state transition, lifecycle, or system structure is being described.**
+
+This rule applies to:
+
+- PRDs
+- Architecture documents
+- MVP and planning documents
+- EPIC and Feature documentation
+- Research summaries where a workflow or architecture is discussed
+- Agent instructions
+- Planner outputs
+- Worker implementation plans
+- Reviewer explanations
+- Skills and workflows
+- GitHub Issues when the task involves a non-trivial process or integration
+
+Preferred formats are:
+
+1. **Mermaid diagrams** for architecture, sequence, flow, state, dependency, and component diagrams.
+2. **ASCII/text diagrams** for quick explanations, compact flows, and environments where Mermaid is not practical.
+3. Tables may supplement a diagram, but should not replace a diagram when flow or structure is the main concept.
+
+Example:
+
+```text
+User
+  -> AI Copilot
+  -> Agent Orchestrator
+      -> Document Tool
+      -> Rules Engine
+      -> Knowledge
+  -> Structured Result
+  -> Human Review
+```
+
+### Agent visual-explanation requirement
+
+Planner, Worker, Reviewer, and future agents must not return only prose for a non-trivial design or process. Their output should include a diagram showing the relevant flow before or alongside the detailed explanation.
+
+The diagram should make clear, when applicable:
+
+- Inputs
+- Processing steps
+- Components/services
+- Decisions
+- Dependencies
+- Outputs
+- Human approval points
+- Error or fallback paths
+
+### Markdown documentation requirement
+
+Every major Markdown document that describes a system, architecture, workflow, lifecycle, or implementation approach must contain at least one maintained diagram that reflects the current documented design.
+
+When the design changes, the diagram must be updated in the same change as the corresponding text. Outdated diagrams are considered documentation defects.
+
+Detailed standards: [`docs/ai-engineering/DOCUMENTATION-STANDARDS.md`](docs/ai-engineering/DOCUMENTATION-STANDARDS.md)
+
 ## Product Engineering
 
 Planned documentation areas include:
